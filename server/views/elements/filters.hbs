@@ -1,0 +1,51 @@
+<div class="col-xs-12 col-md-2" id="filters">
+    <h5>Filter by: </h5>
+    <form method="POST" action="/matches_filtered">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="yes" name="has_picture">
+            <label class="form-check-label" for="has_picture">
+                Picture
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="yes" name="in_contact">
+            <label class="form-check-label" for="in_contact">
+                In Contact
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="yes" name="favourite" id="favourite">
+            <label class="form-check-label" for="favourite">
+                Favourite
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="compatibility">
+                Compatibility:
+                <input type="text" class="form-control-plaintext d-inline w-25" readonly value="1"> %
+            </label>
+            <input type="range" class="form-control-range slider" min="1" max="99" value="1" id="compatibility">
+        </div>
+        <div class="form-group">
+            <label for="formControlRange">
+                Age:
+                <input type="text" class="form-control-plaintext d-inline w-25 valuer" id="age_val"  readonly value="18">
+            </label>
+            <input type="range" class="form-control-range slider" id="slider" min="18" max="95" value="18" id="age">
+        </div>
+        <div class="form-group">
+            <label for="formControlRange">
+                Height in CM:
+                <input type="text" class="form-control-plaintext d-inline w-25 valuer" readonly value="135">
+            </label>
+            <input type="range" class="form-control-range slider" min="135" max="210" value="135" id="height">
+        </div>
+        <label for="distance">Distance in KM</label>
+        <select id="distance" name="distance" class="form-control">
+            <option selected>Choose...</option>
+            <option value="less_30">Less than 30 km</option>
+            <option value="more_300">More than 300 km</option>
+        </select>
+        <button type="submit" class="btn btn-primary m-2">Search</button>
+    </form>
+</div>

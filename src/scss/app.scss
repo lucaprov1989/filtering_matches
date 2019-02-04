@@ -1,0 +1,16 @@
+.card {
+  width: 17rem;
+  margin: 1em;
+  .img-fluid {
+    min-width: 15em;
+    height: 15em;
+  }
+  .list-group {
+    .list-group-item {
+       i {
+        line-height: 1.5em;
+      }
+    }
+  }
+}
+

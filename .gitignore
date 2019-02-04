@@ -1,0 +1,16 @@
+# dependencies
+/node_modules
+
+# Compiled assets
+server_dist
+public/dist/*
+public/app.js
+
+# Misc
+.DS_Store
+.env
+npm-debug.log*
+package-lock.json
+
+.idea/*
+

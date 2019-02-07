@@ -21,6 +21,6 @@ let match = new Schema({
     religion: String,
 
 
-},{ collection: 'matches'});
+},{ collection: 'matches_geoJSON'});
 
 export default mongoose.model('matches', match);

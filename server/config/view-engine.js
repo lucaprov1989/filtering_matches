@@ -15,6 +15,10 @@ const Createhbs = (settings) => {
                 const int = float * 100;
                 return `${int} %`;
             },
+            formatKm: (number) => {
+                const kms = parseInt(Math.round((number/1000)));
+                return `${kms} km`;
+            }
         },
 
     });

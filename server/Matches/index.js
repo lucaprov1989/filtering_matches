@@ -11,29 +11,10 @@ class Matches {
      * @return {Array}
      */
     static async getMatches(filters) {
-        let query;
 
-        if(filters) {
-            query = this.buildQuery(filters);
-        }
+        const query = this.buildQuery(filters);
 
-        const people = await matches.find({query});
-
-        if(Array.isArray(people)) {
-            people.map((person) => {
-                person.distance = parseInt(this.distance(process.env.LAT, process.env.LONG, person.city.lat, person.city.lon));
-            });
-        }
-
-        if(filters && filters.distance !== 'All') {
-            return people.filter((x)=>{
-                if(filters.distance === 'lt_30') {
-                    return x.distance < 30;
-                }
-                return x.distance > 300;
-            })
-        }
-        return people;
+        return matches.aggregate(query);
     }
 
     /**
@@ -41,28 +22,62 @@ class Matches {
      *
      * @return {Object}
      */
-    static buildQuery(filters) {
-        const filtersArr = this.buildFilters(filters);
+    static buildQuery(filters = null) {
+        let filtersArr;
+
+        if(filters) {
+            filtersArr = this.buildFilters(filters);
+        }
+        else {
+            const query = {};
+
+            query['geoNear'] = {
+                "near": {
+                    "type": "Point",
+                    "coordinates": [ Number(process.env.LAT ), Number(process.env.LONG ) ]
+                },
+                "distanceField": "distance",
+                "spherical": true,
+            };
+
+            return [{"$geoNear": query['geoNear']}];
+        }
+
         let query = {};
+        query['match'] = {};
+        query['geoNear'] = {};
+
         filtersArr.forEach((filter) => {
             switch (filter.type) {
                 case 'eq':
-                    query[filter.field] = filter.value;
+                    query['match'][filter.field] = filter.value;
                     break;
                 case 'exists':
-                    query[filter.field] = {"$exists": filter.value};
+                    query['match'][filter.field] = {"$exists": filter.value};
                     break;
                 case 'gt':
-                    query[filter.field] = {"$gt": 0};
+                    query['match'][filter.field] = {"$gt": 0};
                     break;
                 case 'range':
-                    query[filter.field] = {"$lte": filter.value.maxValue, "$gte": filter.value.minValue};
+                    query['match'][filter.field] = {"$lte": filter.value.maxValue, "$gte": filter.value.minValue};
+                    break;
+                case 'distance':
+                    query['geoNear'] = {
+                        "near": {
+                            "type": "Point",
+                            "coordinates": [ Number(process.env.LAT ), Number(process.env.LONG ) ]
+                        },
+                        "distanceField": "distance",
+                        "spherical": true,
+                    };
+                    query['geoNear'][filter.value.cond] = filter.value.amount;
                     break;
                 default:
                     return query;
             }
         });
-        return query;
+
+        return [{"$geoNear": query['geoNear']}, {"$match": query['match'] }];
     }
 
     /**
@@ -94,6 +109,10 @@ class Matches {
                 case 'height_in_cm':
                     outArr.push({type: 'range', value: {minValue: parseFloat(filters[key].min), maxValue: parseFloat(filters[key].max)}, field: key});
                     break;
+                case 'distance':
+                    const distanceCond = filters[key] === '30000' ? 'maxDistance' : 'minDistance';
+                    outArr.push({type: 'distance', value: {cond: distanceCond, amount: parseInt(filters[key]) }, field: key});
+                    break;
                 default:
                     return outArr;
             }
@@ -104,16 +123,7 @@ class Matches {
 
 
     }
-
-    static distance(lat1, lon1, lat2, lon2) {
-        const p = 0.017453292519943295;    // Math.PI / 180
-        const c = Math.cos;
-        const a = 0.5 - c((lat2 - lat1) * p)/2 +
-            c(lat1 * p) * c(lat2 * p) *
-            (1 - c((lon2 - lon1) * p))/2;
-
-        return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-    }
+    
 
 }
 

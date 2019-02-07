@@ -10,21 +10,17 @@ class Matches {
      *
      * @return {Array}
      */
-    static async getMatches(filters=null) {
+    static async getMatches(filters) {
         let query;
 
         if(filters) {
             query = this.buildQuery(filters);
         }
 
-        const people = await matches.find(query);
+        const people = await matches.find({query});
 
         if(Array.isArray(people)) {
             people.map((person) => {
-                person.contacts = person.contacts_exchanged !== 0;
-                person.compatibility_perc = person.compatibility_score * 100;
-                person.picture = person.main_photo
-                    ? `http://thecatapi.com/api/images/get?format=src&type=gif&size=med&${person._id}` : '/assets/img/empty-photo.jpg';
                 person.distance = parseInt(this.distance(process.env.LAT, process.env.LONG, person.city.lat, person.city.lon));
             });
         }
@@ -90,7 +86,6 @@ class Matches {
                     outArr.push({type: 'eq', value: filters[key] === 'yes' || false, field: key});
                     break;
                 case 'compatibility_score':
-                    console.log(typeof filters[key].min);
                     outArr.push({type: 'range', value: {minValue: parseFloat(filters[key].min)/100, maxValue: parseFloat(filters[key].max)/100}, field: key});
                     break;
                 case 'age':

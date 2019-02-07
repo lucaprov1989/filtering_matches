@@ -7,17 +7,18 @@
             <div class="card-header">
                 <h5 class="card-title">{{this.display_name}}, {{this.age}}</h5>
             </div>
-            <img class="card-img-top img-fluid" src="{{this.picture}}" alt="Card image cap">
+            <img class="card-img-top img-fluid"
+                 src="{{#if main_photo}}{{this.main_photo}}&size=med&{{this._id}} {{else}} /assets/img/empty-photo.jpg {{/if}}" alt="Card image cap">
             <div class="card-body">
                 <p class="card-text">{{this.job_title}}, {{this.religion}}</p>
                 <p class="card-text">{{this.height_in_cm}} cm, {{this.city.name}}</p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item d-flex justify-content-around">
-                    <span> {{this.compatibility_perc}} %</span>
+                    <span> {{#formatPercentage this.compatibility_score}} {{/formatPercentage}}</span>
                     <span> {{this.distance}} km</span>
                     <i class="fa fa-star{{#eq this.favourite false}}-o {{/eq}} text-warning"></i>
-                    <i class="fa fa-address-book{{#eq this.contacts false}}-o {{/eq}}"></i>
+                    <i class="fa fa-address-book{{#eq this.contacts_exchanged 0}}-o {{/eq}}"></i>
                 </li>
             </ul>
         </div>

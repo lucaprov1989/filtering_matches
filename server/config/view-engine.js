@@ -11,7 +11,10 @@ const Createhbs = (settings) => {
         extname: '.hbs',
 
         helpers: {
-
+            formatPercentage: (float) => {
+                const int = float * 100;
+                return `${int} %`;
+            },
         },
 
     });

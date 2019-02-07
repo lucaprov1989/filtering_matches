@@ -1,20 +1,20 @@
-<div class="col-xs-12 col-md-2" id="filters">
+<div class="col-sm-12 col-lg-3" id="filters">
     <h5>Filter by: </h5>
-    <form method="POST" action="/matches_filtered">
+    <form method="POST" action="/">
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="yes" name="has_picture">
+            <input class="form-check-input" type="checkbox" value="yes" name="filters[main_photo]" {{#if pic}}checked{{/if}}>
             <label class="form-check-label" for="has_picture">
                 Picture
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="yes" name="in_contact">
+            <input class="form-check-input" type="checkbox" value="yes" name="filters[contacts_exchanged]" {{#if cont}}checked{{/if}}>
             <label class="form-check-label" for="in_contact">
                 In Contact
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="yes" name="favourite" id="favourite">
+            <input class="form-check-input" type="checkbox" value="yes" name="filters[favourite]" id="favourite" {{#if fav}}checked{{/if}}>
             <label class="form-check-label" for="favourite">
                 Favourite
             </label>
@@ -22,30 +22,38 @@
         <div class="form-group">
             <label for="compatibility">
                 Compatibility:
-                <input type="text" class="form-control-plaintext d-inline w-25" readonly value="1"> %
             </label>
-            <input type="range" class="form-control-range slider" min="1" max="99" value="1" id="compatibility">
+            <input type="text" class="sliders" data-min="1" data-max="99" data-from="{{#if min_compatibility}}{{min_compatibility}}{{else}}1{{/if}}" data-to="{{#if max_compatibility}}{{max_compatibility}}{{else}}99{{/if}}" name="compatibility_score" />
         </div>
         <div class="form-group">
             <label for="formControlRange">
                 Age:
-                <input type="text" class="form-control-plaintext d-inline w-25 valuer" id="age_val"  readonly value="18">
             </label>
-            <input type="range" class="form-control-range slider" id="slider" min="18" max="95" value="18" id="age">
+            <input type="text" class="sliders" data-min="18" data-max="95" data-from="{{#if min_age}}{{min_age}}{{else}}18{{/if}}" data-to="{{#if max_age}}{{max_age}}{{else}}95{{/if}}" name="age" />
         </div>
         <div class="form-group">
             <label for="formControlRange">
                 Height in CM:
-                <input type="text" class="form-control-plaintext d-inline w-25 valuer" readonly value="135">
             </label>
-            <input type="range" class="form-control-range slider" min="135" max="210" value="135" id="height">
+            <input type="text" class="sliders" data-min="135" data-max="210" data-from="{{#if min_height}}{{min_height}}{{else}}135{{/if}}" data-to="{{#if max_height}}{{max_height}}{{else}}210{{/if}}" name="height_in_cm" />
         </div>
-        <label for="distance">Distance in KM</label>
-        <select id="distance" name="distance" class="form-control">
-            <option selected>Choose...</option>
-            <option value="less_30">Less than 30 km</option>
-            <option value="more_300">More than 300 km</option>
+
+        <input type="hidden" id="height_in_cm_min" name="filters[height_in_cm][min]">
+        <input type="hidden" id="height_in_cm_max" name="filters[height_in_cm][max]">
+        <input type="hidden" id="age_min" name="filters[age][min]">
+        <input type="hidden" id="age_max" name="filters[age][max]">
+        <input type="hidden" id="compatibility_score_min" name="filters[compatibility_score][min]">
+        <input type="hidden" id="compatibility_score_max" name="filters[compatibility_score][max]">
+
+
+        <label for="distance"> Distance in KM </label>
+        <select id="distance" name="filters[distance]" class="form-control">
+            <option> All </option>
+            <option {{#eq distance 'lt_30'}}selected{{/eq}}value="lt_30">Less than 30 km</option>
+            <option {{#eq distance 'gt_300'}}selected{{/eq}} value="gt_300">More than 300 km</option>
         </select>
         <button type="submit" class="btn btn-primary m-2">Search</button>
+
+
     </form>
 </div>

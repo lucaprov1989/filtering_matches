@@ -12,7 +12,7 @@ let match = new Schema({
     city: {
         name: String,
         lat: Number,
-        long: Number,
+        lon: Number,
     },
     main_photo: String,
     compatibility_score: Number,

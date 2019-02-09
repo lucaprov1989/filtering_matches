@@ -1,5 +1,3 @@
-
-
 const chai = require('chai')
 chai.use(require('chai-fs'));
 const assert = chai.assert;

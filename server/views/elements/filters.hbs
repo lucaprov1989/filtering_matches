@@ -2,19 +2,19 @@
     <h5>Filter by: </h5>
     <form method="POST" action="/">
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="yes" name="filters[main_photo]" {{#if pic}}checked{{/if}}>
+            <input id="picture" class="form-check-input" type="checkbox" value="yes" name="filters[main_photo]" {{#if pic}}checked{{/if}}>
             <label class="form-check-label" for="has_picture">
                 Picture
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="yes" name="filters[contacts_exchanged]" {{#if cont}}checked{{/if}}>
+            <input id="in_contact" class="form-check-input" type="checkbox" value="yes" name="filters[contacts_exchanged]" {{#if cont}}checked{{/if}}>
             <label class="form-check-label" for="in_contact">
                 In Contact
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="yes" name="filters[favourite]" id="favourite" {{#if fav}}checked{{/if}}>
+            <input id="favourite" class="form-check-input" type="checkbox" value="yes" name="filters[favourite]" id="favourite" {{#if fav}}checked{{/if}}>
             <label class="form-check-label" for="favourite">
                 Favourite
             </label>
@@ -52,8 +52,6 @@
             <option {{#eq distance '30000'}}selected{{/eq}} value="30000">Less than 30 km</option>
             <option {{#eq distance '300000'}}selected{{/eq}} value="300000">More than 300 km</option>
         </select>
-        <button type="submit" class="btn btn-primary m-2">Search</button>
-
-
+        <button id="search" type="submit" class="btn btn-primary m-2">Search</button>
     </form>
 </div>

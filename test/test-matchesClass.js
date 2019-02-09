@@ -1,11 +1,11 @@
-import assert from 'assert';
-const chai = require('chai')
+const chai = require('chai');
+const assert = chai.assert;
 const expect = chai.expect;
 import { Matches } from '../server/Matches';
 require('dotenv').config({path: '.env'});
 import mongoose from 'mongoose';
 
-mongoose.connect('mongodb://localhost:27017/filterMatches', { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 export const mockedFilters =  {
     main_photo: 'yes',

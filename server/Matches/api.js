@@ -4,7 +4,6 @@ const router = express.Router();
 
 export const postMatchesCb =  async (req, res, next) => {
     try {
-
         const { filters } = req.body;
         const matches = await Matches.getMatches(filters);
 

@@ -6,7 +6,8 @@
     "test": "mocha --compilers js:babel-core/register --require babel-polyfill",
     "dev": "concurrently \"babel-watch server\" \"webpack --config webpack.config.js\" --names \"SERVER,WEBPACK\"",
     "build": "concurrently \"babel ./server -d ./server_dist --copy-files\" \"webpack --config webpack.config.js --env.mode=production\"",
-    "start": "node server_dist"
+    "start": "node server_dist",
+    "e2e": "mocha --compilers js:babel-core/register --require babel-polyfill --timeout 100000 ./test/e2e/test-filteredMatches.js"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-watch": "^2.0.8",
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chromedriver": "^2.46.0",
     "css-loader": "^0.28.11",
     "cssnano": "^3.10.0",
     "handlebars-loader": "^1.7.0",
@@ -30,6 +33,7 @@
     "node-sass": "^4.9.0",
     "postcss-loader": "^2.1.5",
     "sass-loader": "^7.0.1",
+    "selenium-webdriver": "^4.0.0-alpha.1",
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack-dev-server": "^3.1.4"

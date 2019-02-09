@@ -10,30 +10,9 @@ class Matches {
      *
      * @return {Array}
      */
-    static async getMatches(filters) {
-        let query;
-
-        if(filters) {
-            query = this.buildQuery(filters);
-        }
-
-        const people = await matches.find({query});
-
-        if(Array.isArray(people)) {
-            people.map((person) => {
-                person.distance = parseInt(this.distance(process.env.LAT, process.env.LONG, person.city.lat, person.city.lon));
-            });
-        }
-
-        if(filters && filters.distance !== 'All') {
-            return people.filter((x)=>{
-                if(filters.distance === 'lt_30') {
-                    return x.distance < 30;
-                }
-                return x.distance > 300;
-            })
-        }
-        return people;
+    static async getMatches(filters = null) {
+        const query = this.buildQuery(filters);
+        return matches.aggregate([query]);
     }
 
     /**
@@ -41,28 +20,58 @@ class Matches {
      *
      * @return {Object}
      */
-    static buildQuery(filters) {
+    static buildQuery(filters = null) {
+
+        if(!filters) {
+            return [{
+                "$geoNear": {
+                    "near": {
+                        "type": "Point",
+                        "coordinates": [ Number(process.env.LAT ), Number(process.env.LONG ) ]
+                    },
+                    "distanceField": "distance",
+                    "spherical": true,
+                }
+            }];
+        }
+
         const filtersArr = this.buildFilters(filters);
+
         let query = {};
+        query['match'] = {};
+        query['geoNear'] = {};
+
         filtersArr.forEach((filter) => {
             switch (filter.type) {
                 case 'eq':
-                    query[filter.field] = filter.value;
+                    query['match'][filter.field] = filter.value;
                     break;
                 case 'exists':
-                    query[filter.field] = {"$exists": filter.value};
+                    query['match'][filter.field] = {"$exists": filter.value};
                     break;
                 case 'gt':
-                    query[filter.field] = {"$gt": 0};
+                    query['match'][filter.field] = {"$gt": 0};
                     break;
                 case 'range':
-                    query[filter.field] = {"$lte": filter.value.maxValue, "$gte": filter.value.minValue};
+                    query['match'][filter.field] = {"$lte": filter.value.maxValue, "$gte": filter.value.minValue};
+                    break;
+                case 'distance':
+                    query['geoNear'] = {
+                        "near": {
+                            "type": "Point",
+                            "coordinates": [ Number(process.env.LAT ), Number(process.env.LONG ) ]
+                        },
+                        "distanceField": "distance",
+                        "spherical": true,
+                    };
+                    query['geoNear'][filter.value.cond] = filter.value.amount;
                     break;
                 default:
                     return query;
             }
         });
-        return query;
+
+        return [{"$geoNear": query['geoNear']}, {"$match": query['match'] }];
     }
 
     /**
@@ -71,10 +80,12 @@ class Matches {
      * @return {Array}
      */
     static buildFilters(filters) {
+        if(!filters) {
+            throw new Error('Filters not provided!');
+        }
 
         let outArr = [];
         Object.keys(filters).forEach((key)=>{
-
             switch(key) {
                 case 'main_photo':
                     outArr.push({type: 'exists', value: filters[key] === 'yes' || false, field: key});
@@ -89,10 +100,14 @@ class Matches {
                     outArr.push({type: 'range', value: {minValue: parseFloat(filters[key].min)/100, maxValue: parseFloat(filters[key].max)/100}, field: key});
                     break;
                 case 'age':
-                    outArr.push({type: 'range', value: {minValue: parseFloat(filters[key].min), maxValue: parseFloat(filters[key].max)}, field: key});
+                    outArr.push({type: 'range', value: {minValue: parseInt(filters[key].min), maxValue: parseInt(filters[key].max)}, field: key});
                     break;
                 case 'height_in_cm':
-                    outArr.push({type: 'range', value: {minValue: parseFloat(filters[key].min), maxValue: parseFloat(filters[key].max)}, field: key});
+                    outArr.push({type: 'range', value: {minValue: parseInt(filters[key].min), maxValue: parseInt(filters[key].max)}, field: key});
+                    break;
+                case 'distance':
+                    const distanceCond = filters[key] === '30000' ? 'maxDistance' : 'minDistance';
+                    outArr.push({type: 'distance', value: {cond: distanceCond, amount: parseInt(filters[key]) }, field: key});
                     break;
                 default:
                     return outArr;
@@ -102,19 +117,7 @@ class Matches {
 
         return outArr;
 
-
     }
-
-    static distance(lat1, lon1, lat2, lon2) {
-        const p = 0.017453292519943295;    // Math.PI / 180
-        const c = Math.cos;
-        const a = 0.5 - c((lat2 - lat1) * p)/2 +
-            c(lat1 * p) * c(lat2 * p) *
-            (1 - c((lon2 - lon1) * p))/2;
-
-        return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-    }
-
 }
 
 export { Matches };

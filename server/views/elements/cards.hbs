@@ -16,7 +16,7 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item d-flex justify-content-around">
                     <span> {{#formatPercentage this.compatibility_score}} {{/formatPercentage}}</span>
-                    <span> {{this.distance}} km</span>
+                    <span> {{#formatKm this.distance}} {{/formatKm}}</span>
                     <i class="fa fa-star{{#eq this.favourite false}}-o {{/eq}} text-warning"></i>
                     <i class="fa fa-address-book{{#eq this.contacts_exchanged 0}}-o {{/eq}}"></i>
                 </li>

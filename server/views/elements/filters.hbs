@@ -44,13 +44,13 @@
         <input type="hidden" id="age_max" name="filters[age][max]">
         <input type="hidden" id="compatibility_score_min" name="filters[compatibility_score][min]">
         <input type="hidden" id="compatibility_score_max" name="filters[compatibility_score][max]">
-
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
 
         <label for="distance"> Distance in KM </label>
         <select id="distance" name="filters[distance]" class="form-control">
-            <option> All </option>
-            <option {{#eq distance 'lt_30'}}selected{{/eq}}value="lt_30">Less than 30 km</option>
-            <option {{#eq distance 'gt_300'}}selected{{/eq}} value="gt_300">More than 300 km</option>
+            <option value="0"> All </option>
+            <option {{#eq distance '30000'}}selected{{/eq}} value="30000">Less than 30 km</option>
+            <option {{#eq distance '300000'}}selected{{/eq}} value="300000">More than 300 km</option>
         </select>
         <button type="submit" class="btn btn-primary m-2">Search</button>
 

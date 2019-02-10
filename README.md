@@ -28,6 +28,7 @@ To run this project:
 * clone the repository: `git clone "repo_link"` on the desired folder 
 * start mongodb: run `mongod` on the folder installation
 * import data into mongo db: run ` mongoimport --db "dataBaseToCreate" --collection "collectionToCreate" --file "fileToImport" --jsonArray `
+* to get the Geo JSON working, after importing run: `db.getCollection('matches_geoJSON').createIndex({ location: "2dsphere"});` on the mongo client console;
 * install project dependecies: run `npm install`
 * start the nodejs server: run `npm run dev` on the project installation folder
 * tests: run  `npm test` and run  `npm run e2e` for e2e Tests

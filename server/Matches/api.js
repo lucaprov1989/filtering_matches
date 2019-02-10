@@ -33,7 +33,6 @@ router.post('/', async (req, res, next) => {
             min_height: filters.height_in_cm.min,
             max_height: filters.height_in_cm.max,
             distance: filters.distance
-
         });
     } catch (err) {
         next(err);

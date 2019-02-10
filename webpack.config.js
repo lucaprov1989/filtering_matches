@@ -120,7 +120,6 @@ module.exports = (env = { mode: 'development' }) => {
                                 options: {
                                     url: false,
                                     importer: globImporter(),
-                                    //data: `@import "${process.env.SCSS_VARS}";`,
                                     outputStyle: 'nested',
                                 },
                             },

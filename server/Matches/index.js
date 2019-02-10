@@ -17,7 +17,7 @@ class Matches {
             query = this.buildQuery(filters);
         }
 
-        const people = await matches.find({query});
+        const people = await matches.find(query);
 
         if(Array.isArray(people)) {
             people.map((person) => {

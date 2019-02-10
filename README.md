@@ -30,4 +30,4 @@ To run this project:
 * import data into mongo db: run ` mongoimport --db "dataBaseToCreate" --collection "collectionToCreate" --file "fileToImport" --jsonArray `
 * install project dependecies: run `npm install`
 * start the nodejs server: run `npm run dev` on the project installation folder
-* tests: run  `npm test`
+* tests: run  `npm test` and run  `npm run e2e` for e2e Tests

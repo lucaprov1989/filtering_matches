@@ -6,6 +6,4 @@ export const settings = {
     maxAge: 10000,
 };
 
-
-
 export default () => cookieParser('Wn4QxWQ6zUaXjLs4FXDGQNZ8N2gXUR9H', settings);

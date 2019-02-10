@@ -1,5 +1,4 @@
 require('dotenv').config({path: '.env'});
-
 import babelPolyfill from "babel-polyfill";
 import path from 'path';
 import Express from 'express';

@@ -49,7 +49,7 @@
         <label for="distance"> Distance in KM </label>
         <select id="distance" name="filters[distance]" class="form-control">
             <option value="0"> All </option>
-            <option {{#eq distance '30000'}}selected{{/eq}} value="30000">Less than 30 km</option>
+            <option {{#eq distance '30000'}}selected{{/eq}} id="distance_30" value="30000">Less than 30 km</option>
             <option {{#eq distance '300000'}}selected{{/eq}} value="300000">More than 300 km</option>
         </select>
         <button id="search" type="submit" class="btn btn-primary m-2">Search</button>

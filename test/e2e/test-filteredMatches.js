@@ -74,6 +74,13 @@ describe('Filter Matches End to End',() => {
         await driver.executeScript("document.getElementById('height_in_cm_min').setAttribute('value', '135')");
     });
 
+    it('it must be 1 card if filter distance is less than 30 km', async () => {
+        await driver.executeScript("document.getElementById('distance_30').setAttribute('selected', 'selected')");
+        await driver.findElement(By.id('search')).click();
+        const elements = await driver.findElements(By.css(".card"));
+        expect(elements.length).to.equal(1);
+    });
+
 
 
 });

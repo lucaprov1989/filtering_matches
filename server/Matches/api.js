@@ -41,5 +41,6 @@ export const getMatchesCb = async (req, res, next) => {
 router.get('/', getMatchesCb);
 
 router.post('/', postMatchesCb);
+
 export default router;
 

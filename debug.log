@@ -44,3 +44,5 @@
 [0209/194803.022:ERROR:exception_snapshot_win.cc(88)] thread ID 4008 not found in process
 [0209/194803.021:ERROR:process_reader_win.cc(123)] NtOpenThread: {Accesso negato} Un processo ha richiesto di accedere ad un oggetto ma non ha ottenuto i diritti di accesso. (0xc0000022)
 [0209/194803.022:ERROR:exception_snapshot_win.cc(88)] thread ID 17056 not found in process
+[0210/164606.707:ERROR:process_reader_win.cc(123)] NtOpenThread: {Accesso negato} Un processo ha richiesto di accedere ad un oggetto ma non ha ottenuto i diritti di accesso. (0xc0000022)
+[0210/164606.709:ERROR:exception_snapshot_win.cc(88)] thread ID 12932 not found in process
